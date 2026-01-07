@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐资源下载 - 资源下载中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/download.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="back-home">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div>
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <h1>资源下载中心</h1>
+                </div>
+            </div>
+            <div class="nav-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="globalSearch" placeholder="全局搜索文件...">
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container">
+        <!-- 页面标题和描述 -->
+        <section class="page-header">
+            <div class="category-info">
+                <div class="category-icon" id="categoryIcon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div>
+                    <h2 id="categoryName">音乐资源</h2>
+                    <p id="categoryDesc">各种音乐资源和工具下载</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span id="totalItems">0</span>
+                    <span>个资源</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 子分类筛选器 -->
+        <section class="subcategories-section">
+            <h3><i class="fas fa-filter"></i> 子分类筛选</h3>
+            <div class="subcategories-filter" id="subcategoriesContainer">
+                <button class="subcategory-btn active" data-subcategory="全部">全部</button>
+                <!-- 子分类按钮将通过JavaScript动态生成 -->
+            </div>
+            <div class="subcategory-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="subcategorySearch" placeholder="在当前分类内搜索...">
+            </div>
+        </section>
+
+        <!-- 下载项目展示区 -->
+        <section class="downloads-section">
+            <div class="section-header">
+                <h3><i class="fas fa-download"></i> 下载资源</h3>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="downloads-container">
+                <div class="downloads-grid" id="downloadsContainer">
+                    <!-- 下载项目卡片将通过JavaScript动态生成 -->
+                </div>
+                <div class="no-results" id="noResults" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <p>未找到符合条件的资源</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 资源下载中心 | 仅供学习使用</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/download.js"></script>
+</body>
+</html>
