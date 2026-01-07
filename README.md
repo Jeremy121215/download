@@ -13,6 +13,7 @@
 - 美观的UI设计，友好的交互体验
 
 ## 文件结构
+```
 /download/
 ├── index.html # 主页面 - 分类导航
 ├── download.html # 下载页面
@@ -30,8 +31,7 @@
 │ └── .json # 各个分类数据
 ├── assets/ # 静态资源目录
 └── README.md # 项目说明文档
-
-text
+```
 
 ## 使用方法
 
