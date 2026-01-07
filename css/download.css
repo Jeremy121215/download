@@ -1,0 +1,353 @@
+/* 下载页面特有样式 */
+
+/* 页面头部 */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.category-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+}
+
+.stats {
+    display: flex;
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item span:first-child {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-item span:last-child {
+    color: var(--gray-color);
+    font-size: 14px;
+}
+
+/* 子分类区域 */
+.subcategories-section {
+    margin-bottom: 40px;
+}
+
+.subcategories-section h3 {
+    font-size: 22px;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subcategories-section h3 i {
+    color: var(--primary-color);
+}
+
+.subcategories-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.subcategory-btn {
+    padding: 10px 20px;
+    background-color: #f1f2f6;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.subcategory-btn:hover {
+    background-color: #dfe4ea;
+}
+
+.subcategory-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.subcategory-search {
+    position: relative;
+    max-width: 400px;
+}
+
+.subcategory-search i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-color);
+}
+
+.subcategory-search input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.subcategory-search input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* 下载区域头部 */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-header h3 {
+    font-size: 22px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header h3 i {
+    color: var(--primary-color);
+}
+
+.view-toggle {
+    display: flex;
+    background-color: #f1f2f6;
+    border-radius: var(--border-radius);
+    padding: 5px;
+}
+
+.view-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--gray-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.view-btn.active {
+    background-color: white;
+    color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 下载项目网格布局 */
+.downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* 下载项目列表布局 */
+.downloads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 下载项目卡片 */
+.download-card {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-card-list {
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+}
+
+.download-icon {
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.download-card-list .download-icon {
+    margin-bottom: 0;
+    margin-right: 20px;
+}
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h4 {
+    font-size: 18px;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+}
+
+.download-info p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.download-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--gray-color);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.meta-item i {
+    font-size: 12px;
+}
+
+.download-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.tag {
+    background-color: #f1f2f6;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #555;
+}
+
+.download-card-list .download-meta,
+.download-card-list .download-tags {
+    margin-bottom: 0;
+    margin-right: 20px;
+}
+
+.download-card-list .download-tags {
+    flex: 1;
+}
+
+.download-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-download-sm {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.btn-details {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--dark-color);
+    font-size: 14px;
+}
+
+.btn-details:hover {
+    background-color: #f8f9fa;
+    border-color: var(--primary-color);
+}
+
+/* 无结果状态 */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    color: var(--gray-color);
+}
+
+.no-results i {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .category-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .stats {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .downloads-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .download-card-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .download-card-list .download-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .download-card-list .download-meta,
+    .download-card-list .download-tags {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .download-card-list .download-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
