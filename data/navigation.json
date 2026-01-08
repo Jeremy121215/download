@@ -1,11 +1,8 @@
-{
-  "categories": [
+[
     {
-      "id": "音乐",
-      "name": "音乐",
-      "icon": "fas fa-music",
-      "description": "各种音乐资源和工具下载",
-      "color": "#ff6b6b"
+        "id": "music",
+        "name": "音乐资源",
+        "icon": "fas fa-music",
+        "description": "高品质音乐下载和音频资源"
     }
-  ]
-}
+]
