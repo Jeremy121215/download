@@ -1,0 +1,45 @@
+{
+    "category": "music",
+    "name": "音乐资源",
+    "description": "高品质音乐下载和音频资源",
+    "subcategories": [
+        {
+            "id": "LocalMusicFile",
+            "name": "本地音乐播放文件"
+        }
+    ],
+    "files": [
+        {
+            "id": "凌云少年行",
+            "name": "凌云少年行.lm",
+            "icon": "fas fa-music",
+            "description": "by 星河为梦",
+            "subcategory": "LocalMusicFile",
+            "link": "downloads/music/凌云少年行.lm"
+        },
+        {
+            "id": "关山酒",
+            "name": "关山酒.lm",
+            "icon": "fas fa-music",
+            "description": "by 等了个君",
+            "subcategory": "LocalMusicFile",
+            "link": "downloads/music/关山酒.lm"
+        },
+        {
+            "id": "红旗颂",
+            "name": "红旗颂.lm",
+            "icon": "fas fa-music",
+            "description": "by 吕其明",
+            "subcategory": "LocalMusicFile",
+            "link": "downloads/music/红旗颂.lm"
+        },
+        {
+            "id": "义和团进行曲",
+            "name": "义和团进行曲.lm",
+            "icon": "fas fa-music",
+            "description": "关于义和团运动",
+            "subcategory": "LocalMusicFile",
+            "link": "downloads/music/义和团进行曲.lm"
+        }
+    ]
+}
