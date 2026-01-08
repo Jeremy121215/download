@@ -3,51 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源下载中心 - 首页</title>
+    <title>下载网站导航</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <i class="fas fa-cloud-download-alt"></i>
-                <h1>资源下载中心</h1>
-            </div>
-            <div class="nav-search">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="搜索分类...">
-            </div>
-        </div>
+    <header>
+        <h1>下载网站导航</h1>
+        <p>找到您需要的各种资源下载</p>
     </header>
-
-    <!-- 主内容区 -->
-    <main class="container">
-        <section class="hero">
-            <h2>发现优质资源</h2>
-            <p>精心整理的资源分类，快速找到您需要的文件</p>
-        </section>
-
-        <section class="categories-section">
-            <h3><i class="fas fa-th-large"></i> 资源分类</h3>
-            <div class="categories-grid" id="categoriesContainer">
-                <!-- 分类卡片将通过JavaScript动态生成 -->
-            </div>
-        </section>
-    </main>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 资源下载中心 | 仅供学习使用</p>
+    
+    <main>
+        <div class="search-container">
+            <input type="text" id="global-search" placeholder="搜索所有分类...">
+            <button id="search-btn">搜索</button>
         </div>
+        
+        <div class="categories-container" id="categories-container">
+            <!-- 分类导航将通过JavaScript动态加载 -->
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 下载网站导航 | 维护者可以通过编辑data目录下的JSON文件来添加内容</p>
     </footer>
-
-    <!-- JavaScript文件 -->
-    <script src="js/utils.js"></script>
+    
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
 </body>
