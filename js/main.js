@@ -1,267 +1,135 @@
-// 全局通用功能
+// 通用功能模块
+class DownloadApp {
+    constructor() {
+        this.currentCategory = null;
+        this.currentSubcategory = 'all';
+        this.searchQuery = '';
+    }
 
-// DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
-    // 初始化搜索功能（如果页面有搜索框）
-    initSearch();
+    // 加载JSON数据
+    async loadJSON(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('加载JSON数据失败:', error);
+            return null;
+        }
+    }
+
+    // 搜索功能 - 根据关键词过滤数据
+    searchData(data, query, fields = ['name', 'description']) {
+        if (!query) return data;
+        
+        const lowercaseQuery = query.toLowerCase();
+        return data.filter(item => {
+            return fields.some(field => {
+                const value = item[field];
+                return value && value.toLowerCase().includes(lowercaseQuery);
+            });
+        });
+    }
+
+    // 获取URL参数
+    getURLParams() {
+        const params = new URLSearchParams(window.location.search);
+        const result = {};
+        for (const [key, value] of params) {
+            result[key] = value;
+        }
+        return result;
+    }
+
+    // 生成随机ID
+    generateID() {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    // 显示加载状态
+    showLoading(element) {
+        element.innerHTML = `
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>加载中...</p>
+            </div>
+        `;
+    }
+
+    // 显示空状态
+    showEmptyState(element, message = '没有找到相关内容') {
+        element.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <h3>未找到内容</h3>
+                <p>${message}</p>
+            </div>
+        `;
+    }
+
+    // 格式化文件大小
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // 获取文件类型图标
+    getFileTypeIcon(filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        const icons = {
+            'pdf': 'fa-file-pdf',
+            'doc': 'fa-file-word',
+            'docx': 'fa-file-word',
+            'xls': 'fa-file-excel',
+            'xlsx': 'fa-file-excel',
+            'ppt': 'fa-file-powerpoint',
+            'pptx': 'fa-file-powerpoint',
+            'zip': 'fa-file-archive',
+            'rar': 'fa-file-archive',
+            '7z': 'fa-file-archive',
+            'jpg': 'fa-file-image',
+            'jpeg': 'fa-file-image',
+            'png': 'fa-file-image',
+            'gif': 'fa-file-image',
+            'mp3': 'fa-file-audio',
+            'mp4': 'fa-file-video',
+            'exe': 'fa-file-download',
+            'dmg': 'fa-file-download',
+            'pkg': 'fa-file-download'
+        };
+        return icons[ext] || 'fa-file';
+    }
+}
+
+// 初始化应用实例
+const app = new DownloadApp();
+
+// 页面加载完成后执行
+window.addEventListener('DOMContentLoaded', () => {
+    // 添加搜索事件监听
+    const searchInput = document.getElementById('global-search') || document.getElementById('category-search');
+    const searchBtn = document.getElementById('search-btn');
     
-    // 初始化返回顶部按钮
-    initBackToTop();
-    
-    // 初始化下载确认
-    initDownloadConfirm();
+    if (searchInput && searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            performSearch();
+        });
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
 });
 
-/**
- * 初始化搜索功能
- */
-function initSearch() {
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        const debouncedSearch = debounce(function() {
-            const searchTerm = searchInput.value.toLowerCase();
-            filterCategories(searchTerm);
-        }, 300);
-        
-        searchInput.addEventListener('input', debouncedSearch);
-    }
-    
-    const globalSearch = document.getElementById('globalSearch');
-    if (globalSearch) {
-        const debouncedGlobalSearch = debounce(function() {
-            const searchTerm = globalSearch.value.toLowerCase();
-            // 全局搜索功能在download.js中实现
-            if (window.filterDownloads) {
-                window.filterDownloads(searchTerm, 'global');
-            }
-        }, 300);
-        
-        globalSearch.addEventListener('input', debouncedGlobalSearch);
-    }
-    
-    const subcategorySearch = document.getElementById('subcategorySearch');
-    if (subcategorySearch) {
-        const debouncedSubSearch = debounce(function() {
-            const searchTerm = subcategorySearch.value.toLowerCase();
-            // 子分类内搜索功能在download.js中实现
-            if (window.filterDownloads) {
-                window.filterDownloads(searchTerm, 'subcategory');
-            }
-        }, 300);
-        
-        subcategorySearch.addEventListener('input', debouncedSubSearch);
-    }
-}
-
-/**
- * 过滤分类（首页使用）
- * @param {string} searchTerm - 搜索关键词
- */
-function filterCategories(searchTerm) {
-    const categoryCards = document.querySelectorAll('.category-card');
-    let visibleCount = 0;
-    
-    categoryCards.forEach(card => {
-        const title = card.querySelector('h4').textContent.toLowerCase();
-        const description = card.querySelector('p').textContent.toLowerCase();
-        
-        if (title.includes(searchTerm) || description.includes(searchTerm)) {
-            card.style.display = 'block';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    // 如果没有匹配项，显示提示
-    const container = document.getElementById('categoriesContainer');
-    const noResults = container.querySelector('.no-results') || 
-                     container.querySelector('.empty-state');
-    
-    if (visibleCount === 0) {
-        if (!noResults) {
-            createEmptyState('categoriesContainer', '未找到匹配的分类', 'fas fa-search');
-        }
-    } else if (noResults) {
-        noResults.remove();
-    }
-}
-
-/**
- * 初始化返回顶部按钮
- */
-function initBackToTop() {
-    // 创建返回顶部按钮
-    const backToTopBtn = document.createElement('button');
-    backToTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    backToTopBtn.className = 'back-to-top';
-    backToTopBtn.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 20px;
-        display: none;
-        z-index: 99;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-    `;
-    
-    document.body.appendChild(backToTopBtn);
-    
-    // 滚动事件监听
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.style.display = 'flex';
-            backToTopBtn.style.alignItems = 'center';
-            backToTopBtn.style.justifyContent = 'center';
-        } else {
-            backToTopBtn.style.display = 'none';
-        }
-    });
-    
-    // 点击事件
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-    
-    // 添加悬停效果
-    backToTopBtn.addEventListener('mouseenter', function() {
-        backToTopBtn.style.backgroundColor = '#2980b9';
-        backToTopBtn.style.transform = 'translateY(-3px)';
-    });
-    
-    backToTopBtn.addEventListener('mouseleave', function() {
-        backToTopBtn.style.backgroundColor = 'var(--primary-color)';
-        backToTopBtn.style.transform = 'translateY(0)';
-    });
-}
-
-/**
- * 初始化下载确认
- */
-function initDownloadConfirm() {
-    // 使用事件委托处理下载按钮点击
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.btn-download, .btn-download-sm')) {
-            const button = e.target.closest('.btn-download, .btn-download-sm');
-            const itemName = button.getAttribute('data-name') || '该文件';
-            
-            // 在实际应用中，这里应该直接下载
-            // 这里我们模拟一个确认对话框
-            if (confirm(`您确定要下载"${itemName}"吗？`)) {
-                // 获取下载链接
-                const downloadLink = button.getAttribute('href') || button.getAttribute('data-link');
-                
-                if (downloadLink && downloadLink !== '#') {
-                    // 在新标签页中打开下载链接
-                    window.open(downloadLink, '_blank');
-                    
-                    // 显示下载成功提示
-                    showNotification(`开始下载: ${itemName}`, 'success');
-                } else {
-                    showNotification('下载链接无效', 'error');
-                }
-            }
-            e.preventDefault();
-        }
-    });
-}
-
-/**
- * 显示通知消息
- * @param {string} message - 消息内容
- * @param {string} type - 消息类型（success, error, info）
- */
-function showNotification(message, type = 'info') {
-    // 创建通知容器（如果不存在）
-    let notificationContainer = document.getElementById('notification-container');
-    if (!notificationContainer) {
-        notificationContainer = document.createElement('div');
-        notificationContainer.id = 'notification-container';
-        notificationContainer.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-        `;
-        document.body.appendChild(notificationContainer);
-    }
-    
-    // 创建通知元素
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.style.cssText = `
-        background-color: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db'};
-        color: white;
-        padding: 15px 20px;
-        border-radius: var(--border-radius);
-        margin-bottom: 10px;
-        box-shadow: var(--shadow);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        min-width: 300px;
-        max-width: 400px;
-        animation: slideIn 0.3s ease;
-    `;
-    
-    // 添加图标
-    const icon = document.createElement('i');
-    icon.className = `fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}`;
-    
-    // 添加消息
-    const messageSpan = document.createElement('span');
-    messageSpan.textContent = message;
-    
-    notification.appendChild(icon);
-    notification.appendChild(messageSpan);
-    notificationContainer.appendChild(notification);
-    
-    // 3秒后自动移除通知
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
-    
-    // 添加动画关键帧
-    if (!document.getElementById('notification-animations')) {
-        const style = document.createElement('style');
-        style.id = 'notification-animations';
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
+// 搜索函数（会在各页面中具体实现）
+function performSearch() {
+    // 由各页面具体实现
+    console.log('搜索功能将由具体页面实现');
 }
