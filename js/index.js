@@ -1,85 +1,97 @@
-// 首页功能
+// 首页逻辑
+class IndexPage {
+    constructor() {
+        this.categories = [];
+        this.filteredCategories = [];
+        this.init();
+    }
 
-// DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
-    loadCategories();
-});
+    // 初始化
+    async init() {
+        await this.loadCategories();
+        this.setupEventListeners();
+    }
 
-/**
- * 加载分类数据
- */
-async function loadCategories() {
-    const container = document.getElementById('categoriesContainer');
-    if (!container) return;
-    
-    // 显示加载状态
-    createLoadingIndicator('categoriesContainer', '正在加载分类...');
-    
-    try {
-        // 从data/navigation.json加载分类数据
-        const data = await fetchJSON('data/navigation.json');
+    // 加载分类数据
+    async loadCategories() {
+        const container = document.getElementById('categories-container');
+        app.showLoading(container);
         
-        if (data.categories && data.categories.length > 0) {
-            renderCategories(data.categories);
+        this.categories = await app.loadJSON('data/navigation.json');
+        
+        if (this.categories) {
+            this.filteredCategories = [...this.categories];
+            this.renderCategories();
         } else {
-            createEmptyState('categoriesContainer', '暂无分类数据', 'fas fa-folder-open');
+            app.showEmptyState(container, '无法加载分类数据');
         }
-    } catch (error) {
-        console.error('Failed to load categories:', error);
-        createEmptyState('categoriesContainer', '加载失败，请刷新重试', 'fas fa-exclamation-triangle');
+    }
+
+    // 渲染分类列表
+    renderCategories() {
+        const container = document.getElementById('categories-container');
+        
+        if (this.filteredCategories.length === 0) {
+            app.showEmptyState(container, '没有找到匹配的分类');
+            return;
+        }
+
+        container.innerHTML = this.filteredCategories.map(category => `
+            <div class="category-card" onclick="indexPage.navigateToCategory('${category.id}')">
+                <div class="category-icon">
+                    <i class="${category.icon}"></i>
+                </div>
+                <h2>${category.name}</h2>
+                <p>${category.description}</p>
+                <a href="download.html?category=${category.id}" class="enter-btn">进入</a>
+            </div>
+        `).join('');
+    }
+
+    // 设置事件监听器
+    setupEventListeners() {
+        const searchInput = document.getElementById('global-search');
+        const searchBtn = document.getElementById('search-btn');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchCategories(e.target.value);
+            });
+        }
+
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                const query = searchInput ? searchInput.value : '';
+                this.searchCategories(query);
+            });
+        }
+    }
+
+    // 搜索分类
+    searchCategories(query) {
+        if (!query) {
+            this.filteredCategories = [...this.categories];
+        } else {
+            this.filteredCategories = app.searchData(this.categories, query);
+        }
+        this.renderCategories();
+    }
+
+    // 导航到分类页面
+    navigateToCategory(categoryId) {
+        window.location.href = `download.html?category=${categoryId}`;
     }
 }
 
-/**
- * 渲染分类卡片
- * @param {Array} categories - 分类数组
- */
-function renderCategories(categories) {
-    const container = document.getElementById('categoriesContainer');
-    container.innerHTML = '';
+// 初始化首页
+let indexPage;
+window.addEventListener('DOMContentLoaded', () => {
+    indexPage = new IndexPage();
     
-    categories.forEach(category => {
-        const categoryCard = createCategoryCard(category);
-        container.appendChild(categoryCard);
-    });
-}
-
-/**
- * 创建分类卡片元素
- * @param {Object} category - 分类对象
- * @returns {HTMLElement} 分类卡片元素
- */
-function createCategoryCard(category) {
-    const card = document.createElement('div');
-    card.className = 'category-card card';
-    card.dataset.categoryId = category.id;
-    
-    // 设置卡片颜色
-    card.style.borderTop = `5px solid ${category.color || '#3498db'}`;
-    
-    // 鼠标悬停时的背景色变化
-    card.addEventListener('mouseenter', function() {
-        this.style.backgroundColor = `${category.color}15`; // 添加透明度
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.backgroundColor = '';
-    });
-    
-    // 点击事件 - 跳转到下载页面
-    card.addEventListener('click', function() {
-        window.location.href = `download.html?category=${encodeURIComponent(category.id)}`;
-    });
-    
-    card.innerHTML = `
-        <div class="category-icon">
-            <i class="${category.icon}"></i>
-        </div>
-        <div class="category-info">
-            <h4>${category.name}</h4>
-            <p>${category.description}</p>
-        </div>
-    `;
-    
-    return card;
-}
+    // 重写全局搜索函数
+    window.performSearch = () => {
+        const searchInput = document.getElementById('global-search');
+        const query = searchInput ? searchInput.value : '';
+        indexPage.searchCategories(query);
+    };
+});
