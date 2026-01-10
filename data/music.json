@@ -41,5 +41,14 @@
             "subcategory": "LocalMusicFile",
             "link": "downloads/music/义和团进行曲.lm"
         }
+        ,
+        {
+            "id": "难得真兄弟",
+            "name": "难得真兄弟.lm",
+            "icon": "fas fa-music",
+            "description": "by 何流 / 宋晓峰",
+            "subcategory": "LocalMusicFile",
+            "link": "downloads/music/难得真兄弟.lm"
+        }
     ]
 }
