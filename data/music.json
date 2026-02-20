@@ -6,6 +6,10 @@
         {
             "id": "LocalMusicFile",
             "name": "本地音乐播放文件"
+        },
+        {
+            "id": "MIDI",
+            "name": "MIDI音乐文件"
         }
     ],
     "files": [
