@@ -40,8 +40,7 @@
             "description": "关于义和团运动",
             "subcategory": "LocalMusicFile",
             "link": "downloads/music/义和团进行曲.lm"
-        }
-        ,
+        },
         {
             "id": "难得真兄弟",
             "name": "难得真兄弟.lm",
@@ -49,6 +48,14 @@
             "description": "by 何流 / 宋晓峰",
             "subcategory": "LocalMusicFile",
             "link": "downloads/music/难得真兄弟.lm"
+        },
+        {
+            "id": "难得真兄弟（管弦乐）",
+            "name": "难得真兄弟（管弦乐）.mid",
+            "icon": "fas fa-music",
+            "description": "",
+            "subcategory": "",
+            "link": "downloads/music/难得真兄弟（管弦乐）.mid"
         }
     ]
 }
